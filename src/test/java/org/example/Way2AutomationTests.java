@@ -5,16 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.time.Duration;
-import java.util.List;
 
 public class Way2AutomationTests {
 
@@ -26,6 +20,7 @@ public class Way2AutomationTests {
     public String writeEmail = "samoiliknata@gmail.com";
     public String wrongEmail = "samoiliknatagmail.com";
     public String writePassword = "123456";
+    public String warningBadEmail = "Please enter a valid email address.";
 
     @BeforeMethod
     public void setup() {
@@ -50,7 +45,7 @@ public class Way2AutomationTests {
         firstNameForm.click();
         firstNameForm.sendKeys(writeFirstName);
 
-        WebElement lastNameForm = webDriver.findElement(By.xpath("///*[@id=\"register_form\"]/fieldset[1]/p[2]/input"));
+        WebElement lastNameForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[1]/p[2]/input"));
         lastNameForm.click();
         lastNameForm.sendKeys(writeLastName);
 
@@ -93,7 +88,7 @@ public class Way2AutomationTests {
         firstNameForm.click();
         firstNameForm.sendKeys(writeFirstName);
 
-        WebElement lastNameForm = webDriver.findElement(By.xpath("///*[@id=\"register_form\"]/fieldset[1]/p[2]/input"));
+        WebElement lastNameForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[1]/p[2]/input"));
         lastNameForm.click();
         lastNameForm.sendKeys(writeLastName);
 
@@ -126,5 +121,10 @@ public class Way2AutomationTests {
         //      pressing SUBMIT button
         WebElement submitButton = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[13]/input"));
         submitButton.click();
+
+        //      expecting a warning "Please enter a valid email address." and compare
+        WebElement warningWrongEmail = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[8]/label[2]"));
+
+        Assert.assertTrue(warningWrongEmail.getText().contains(warningBadEmail));
     }
 }
