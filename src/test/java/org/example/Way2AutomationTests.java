@@ -19,8 +19,13 @@ import java.util.List;
 public class Way2AutomationTests {
 
     public WebDriver webDriver;
-    public String poland = "Poland";
-
+    public String writeFirstName = "Natallia";
+    public String writeLastName = "Samoilik";
+    public String writePhoneNumber = "572111551";
+    public String writeUserName = "Natali";
+    public String writeEmail = "samoiliknata@gmail.com";
+    public String wrongEmail = "samoiliknatagmail.com";
+    public String writePassword = "123456";
 
     @BeforeMethod
     public void setup() {
@@ -38,53 +43,88 @@ public class Way2AutomationTests {
     }
 
     @Test
-    public void verifyPoland() {
+    public void writeCredentials() {
 
-        WebElement destination = webDriver.findElement(By.id("nav-global-location-popover-link"));
-        destination.click();
+        //      fulfill First Name and Last Name forms
+        WebElement firstNameForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[1]/p[1]/input"));
+        firstNameForm.click();
+        firstNameForm.sendKeys(writeFirstName);
 
-        //      waiting for country drop down window
-        WebElement zipDropDown = new WebDriverWait(webDriver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//select[@id = 'GLUXCountryList']")));
+        WebElement lastNameForm = webDriver.findElement(By.xpath("///*[@id=\"register_form\"]/fieldset[1]/p[2]/input"));
+        lastNameForm.click();
+        lastNameForm.sendKeys(writeLastName);
 
-        WebElement listOfCountries = webDriver.findElement(By.xpath("//select[@id = 'GLUXCountryList']"));
+        //      select marital status and hobby:
+        WebElement maritalStatusMarried = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[2]/div/label[2]/input"));
+        maritalStatusMarried.click();
 
-        //     working with countries
-        Select select = new Select(listOfCountries);
+        WebElement hobbyReading = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[3]/div/label[2]/input"));
+        hobbyReading.click();
 
-        List<WebElement> selectList = select.getOptions();
-        Assert.assertTrue(selectList.stream().anyMatch(c -> c.getText().equals(poland)));
+        //      fulfill phone number, Username
+        WebElement phoneNumberForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[6]/input"));
+        phoneNumberForm.click();
+        phoneNumberForm.sendKeys(writePhoneNumber);
+
+        WebElement userNameForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[7]/input"));
+        userNameForm.click();
+        userNameForm.sendKeys(writeUserName);
+
+        //   fullfill WRITE email
+        WebElement emailForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[8]/input"));
+        emailForm.click();
+        emailForm.sendKeys(writeEmail);
+
+        //   entering password
+        WebElement password = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[11]/input"));
+        password.click();
+        password.sendKeys(writePassword);
+
+        //      pressing SUBMIT button
+        WebElement submitButton = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[13]/input"));
+        submitButton.click();
     }
 
     @Test
-    public void verifyShipping() {
+    public void wrongCredentials() {
 
-        //        choose window with countries
-        WebElement deliverTo = webDriver.findElement(By.xpath("//div/span[@id= 'nav-global-location-data-modal-action']"));
-        deliverTo.click();
+        //      fulfill First Name and Last Name forms
+        WebElement firstNameForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[1]/p[1]/input"));
+        firstNameForm.click();
+        firstNameForm.sendKeys(writeFirstName);
 
-        WebElement buttonDropDown = new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@id = 'GLUXCountryListDropdown']")));
-        buttonDropDown.click();
+        WebElement lastNameForm = webDriver.findElement(By.xpath("///*[@id=\"register_form\"]/fieldset[1]/p[2]/input"));
+        lastNameForm.click();
+        lastNameForm.sendKeys(writeLastName);
 
-        // choose Poland
-        WebElement countryPoland = new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li/a[contains(text(),'" + poland + "')]")));
-        countryPoland.click();
+        //      select marital status and hobby:
+        WebElement maritalStatusMarried = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[2]/div/label[2]/input"));
+        maritalStatusMarried.click();
 
-        WebElement buttonDone = webDriver.findElement(By.xpath("//button[contains(@name, 'glowDoneButton')]"));
-        buttonDone.click();
+        WebElement hobbyReading = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[3]/div/label[2]/input"));
+        hobbyReading.click();
 
-//      waiting to refresh the website
-        boolean waitingToReload = new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.stalenessOf(deliverTo));
+        //      fulfill phone number, Username
+        WebElement phoneNumberForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[6]/input"));
+        phoneNumberForm.click();
+        phoneNumberForm.sendKeys(writePhoneNumber);
 
-        //      choose any item
-        WebElement buttonHeadsets = new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id = 'gw-layout']//a[contains(@aria-label, 'Headsets')]")));
-        buttonHeadsets.click();
+        WebElement userNameForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[7]/input"));
+        userNameForm.click();
+        userNameForm.sendKeys(writeUserName);
 
-        WebElement buttonHeadsetsMicro = new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id = 'search']//div[@cel_widget_id= 'MAIN-SEARCH_RESULTS-1']//div[contains(@class, 'a-section')]//div[contains(@class, 'sg-col')]")));
-        buttonHeadsetsMicro.click();
+        //   fullfill WRONG email
+        WebElement emailForm = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[8]/input"));
+        emailForm.click();
+        emailForm.sendKeys(wrongEmail);
 
-        //      checking if they ship our item to Poland
-        WebElement deliveryBox = new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id = 'apex_offerDisplay_single_desktop']//div[@id = 'amazonGlobal_feature_div']")));
-        Assert.assertTrue(deliveryBox.getText().contains(poland));
+        //   entering password
+        WebElement password = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[11]/input"));
+        password.click();
+        password.sendKeys(writePassword);
+
+        //      pressing SUBMIT button
+        WebElement submitButton = webDriver.findElement(By.xpath("//*[@id=\"register_form\"]/fieldset[13]/input"));
+        submitButton.click();
     }
 }
